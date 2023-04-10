@@ -1,0 +1,137 @@
+################################################################################
+## shared
+################################################################################
+variable "environment" {
+  type        = string
+  description = "Name of the environment, i.e. dev, stage, prod"
+}
+
+variable "namespace" {
+  type        = string
+  description = "Namespace of the project, i.e. refarch"
+}
+
+variable "tags" {
+  type        = map(string)
+  default = {
+    "key" = "dev"
+  }
+  description = "Default tags to apply to every resource"
+}
+
+variable "aws_region" {
+  type        = string
+  default     = "us-east-1"
+  description = "Specify region for VPC endpoints"
+}
+
+################################################################################
+## vpc
+################################################################################
+variable "vpc_name_override" {
+  type        = string
+  description = <<-EOT
+    VPC Name override. If left undefined, this will use the naming convention of
+    `namespace-environment-vpc`.
+  EOT
+  default     = null
+}
+
+variable "availability_zones" {
+  type        = list(string)
+  default = [
+    "us-east-1a",
+    "us-east-1b"
+  ]
+  description = "List of availability zones to deploy resources in."
+}
+
+variable "vpc_ipv4_primary_cidr_block" {
+  type        = string
+  description = "IPv4 CIDR block for the VPC to use."
+}
+
+variable "default_network_acl_deny_all" {
+  type        = bool
+  default     = false
+  description = <<-EOT
+    When `true`, manage the default network acl and remove all rules, disabling all ingress and egress.
+    When `false`, do not mange the default networking acl, allowing it to be managed by another component.
+  EOT
+}
+
+variable "default_route_table_no_routes" {
+  type        = bool
+  default     = false
+  description = <<-EOT
+    When `true`, manage the default route table and remove all routes, disabling all ingress and egress.
+    When `false`, do not mange the default route table, allowing it to be managed by another component.
+    Conflicts with Terraform resource `aws_main_route_table_association`.
+  EOT
+}
+
+
+
+
+
+
+variable "default_security_group_deny_all" {
+  type        = bool
+  default     = true
+  description = <<-EOT
+    When `true`, manage the default security group and remove all rules, disabling all ingress and egress.
+    When `false`, do not manage the default security group, allowing it to be managed by another component.
+  EOT
+}
+
+variable "assign_generated_ipv6_cidr_block" {
+  type        = bool
+  description = "When `true`, assign AWS generated IPv6 CIDR block to the VPC.  Conflicts with `ipv6_ipam_pool_id`."
+  default     = true
+}
+
+variable "ipv6_egress_only_internet_gateway_enabled" {
+  type        = bool
+  description = "Set `true` to create an IPv6 Egress-Only Internet Gateway for the VPC"
+  default     = false
+}
+
+variable "auto_generate_multi_az_subnets" {
+  type        = bool
+  description = "Auto-generate subnets in defined availability zones"
+  default     = true
+}
+
+################################################################################
+## vpn
+###############################################################################
+
+
+
+
+
+variable "public_subnet_name_override" {
+  type        = string
+  description = <<-EOT
+     Public Subnets name. If left undefined, this will use the naming convention of
+    `namespace-environment-public-subnet`.
+  EOT
+  default     = null
+}
+
+variable "private_subnet_name_override" {
+  type        = string
+  description = <<-EOT
+     Private Subnets name. If left undefined, this will use the naming convention of
+    `namespace-environment-private-subnet`.
+  EOT
+  default     = null
+}
+
+
+
+
+
+
+
+
